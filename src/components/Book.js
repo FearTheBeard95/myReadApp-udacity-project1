@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+//Book component to render an individual book on a shelf
 export default class Book extends Component {
   constructor(props) {
     super(props);
@@ -8,6 +9,7 @@ export default class Book extends Component {
     };
   }
 
+  //Function to handle the switching of a book to another shelf
   handleListSwitch = (e) => {
     this.setState(
       {
@@ -30,6 +32,7 @@ export default class Book extends Component {
     );
   };
 
+  //hook onto when the component renders to get the latest shelf where the book is currently on
   componentDidMount() {
     this.setState({
       shelf: this.props.book.shelf ? this.props.book.shelf : 'none',

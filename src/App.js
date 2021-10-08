@@ -5,12 +5,14 @@ import './App.css';
 import BookShelf from '../../my-reads-app/src/components/BookShelf';
 import BookSearch from '../../my-reads-app/src/components/BookSearch';
 
+//Main app component that renders the entire application
 class BooksApp extends React.Component {
   state = {
     mybooks: [],
     searchedBooks: [],
   };
 
+  //Function to handle the adding of a book the users library on a given shelf
   handleAddBook = (book) => {
     this.setState(
       (prevState) => {
@@ -27,6 +29,7 @@ class BooksApp extends React.Component {
     );
   };
 
+  //Function to handle the searching of books that can be added to the users library
   handleSearch = (term) => {
     if (term.length > 0) {
       BooksAPI.search(term)
@@ -59,12 +62,14 @@ class BooksApp extends React.Component {
     }
   };
 
+  //Function to reset the searched books when switching back to the home screen
   handleResetSearch = () => {
     this.setState({
       searchedBooks: [],
     });
   };
 
+  //Get the all the books that are currently in the users library, even after refreshing the page
   componentDidMount() {
     BooksAPI.getAll().then((books) =>
       this.setState({

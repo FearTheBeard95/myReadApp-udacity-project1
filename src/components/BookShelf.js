@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import BookList from './BookList';
 
+//BookShelf component to hold the three different book shelves
 const BookShelf = (props) => (
   <div className='list-books'>
     <div className='list-books-title'>

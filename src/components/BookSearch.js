@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Book from './Book';
 
+//BookSearch Component to search for books that can be added to the users library
 export default class BookList extends Component {
   constructor(props) {
     super(props);
@@ -10,6 +11,7 @@ export default class BookList extends Component {
     };
   }
 
+  //Function to handle the input in the search input field
   handleInput = (event) => {
     this.setState(
       {

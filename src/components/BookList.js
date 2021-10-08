@@ -1,6 +1,7 @@
 import React from 'react';
 import Book from './Book';
 
+//BookList component to hold the books for a specific shelf
 const BookList = (props) => (
   <div className='bookshelf'>
     <h2 className='bookshelf-title'>{props.title}</h2>
