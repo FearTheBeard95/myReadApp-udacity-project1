@@ -27,4 +27,7 @@ This method was used to update the current state of each on the users shelve, th
 ## Installation
 
 1. - [ ] clone project to your computer using the command `code(git clone )`
-2. - [ ] open your terminal application and go to the director where the project was cloned
+2. - [ ] open your terminal application and go to the director where the project was cloned and run the following commands
+      - [ ] `code(npm install)` to install all the necessary dependencies required to run the app
+      - [ ] `code(npm run start)` to run the appliaction
+3. - [ ] Access the appliaction on your local machine by going to this link [localhost:3000](https://localhost:3000) 
