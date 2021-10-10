@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Book from './Book';
+import PropTypes from 'prop-types';
 
 //BookSearch Component to search for books that can be added to the users library
 export default class BookList extends Component {
@@ -24,6 +25,16 @@ export default class BookList extends Component {
   };
   render() {
     const { searchTerm } = this.state;
+    const { currentBooks, searchedBooks } = this.props;
+
+    const searchResults = searchedBooks.map((book) => {
+      currentBooks.map((b) => {
+        if (b.id === book.id) book.shelf = b.shelf;
+        return b;
+      });
+      return book;
+    });
+
     return (
       <div className='search-books'>
         <div className='search-books-bar'>
@@ -44,8 +55,13 @@ export default class BookList extends Component {
         <div className='search-books-results'>
           <ol className='books-grid'>
             {this.props.searchedBooks.length > 0 && searchTerm.length > 0 ? (
-              this.props.searchedBooks.map((book, index) => (
-                <Book key={index} book={book} addBook={this.props.addBook} />
+              searchResults.map((book, index) => (
+                <Book
+                  key={index}
+                  book={book}
+                  addBook={this.props.addBook}
+                  shelf={book.shelf ? book.shelf : 'none'}
+                />
               ))
             ) : (
               <li>No books match that search, try again</li>
@@ -56,3 +72,10 @@ export default class BookList extends Component {
     );
   }
 }
+
+BookList.protoType = {
+  addBook: PropTypes.func.isRequired,
+  currentBooks: PropTypes.array.isRequired,
+  search: PropTypes.func.isRequired,
+  resetSearch: PropTypes.func.isRequired,
+};

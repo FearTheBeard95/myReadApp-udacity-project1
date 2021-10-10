@@ -1,44 +1,26 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 //Book component to render an individual book on a shelf
 export default class Book extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shelf: 'none',
-    };
-  }
-
   //Function to handle the switching of a book to another shelf
   handleListSwitch = (e) => {
-    this.setState(
+    this.props.addBook(
       {
-        shelf: e.target.value,
+        ...this.props.book,
+        authors: this.props.book.authors
+          ? this.props.book.authors
+          : ['Missing author'],
+        imageLinks: {
+          thumbnail: this.props.book.imageLinks
+            ? this.props.book.imageLinks.thumbnail
+            : 'http://via.placeholder.com/128x193?text=No%20Cover',
+        },
+        shelf: this.props.shelf,
       },
-      () => {
-        this.props.addBook({
-          ...this.props.book,
-          authors: this.props.book.authors
-            ? this.props.book.authors
-            : ['Missing author'],
-          imageLinks: {
-            thumbnail: this.props.book.imageLinks
-              ? this.props.book.imageLinks.thumbnail
-              : '',
-          },
-          shelf: this.state.shelf,
-        });
-      }
+      e.target.value
     );
   };
-
-  //hook onto when the component renders to get the latest shelf where the book is currently on
-  componentDidMount() {
-    this.setState({
-      shelf: this.props.book.shelf ? this.props.book.shelf : 'none',
-    });
-  }
-
   render() {
     return this.props.book ? (
       <li key={this.props.book.id}>
@@ -52,12 +34,12 @@ export default class Book extends Component {
                 backgroundImage: `url("${
                   this.props.book.imageLinks
                     ? this.props.book.imageLinks.thumbnail
-                    : ''
+                    : 'http://via.placeholder.com/128x193?text=No%20Cover'
                 }")`,
               }}
             ></div>
             <div className='book-shelf-changer'>
-              <select onChange={this.handleListSwitch} value={this.state.shelf}>
+              <select onChange={this.handleListSwitch} value={this.props.shelf}>
                 <option value='move' disabled>
                   Move to...
                 </option>
@@ -72,11 +54,9 @@ export default class Book extends Component {
             {this.props.book ? this.props.book.title : ''}
           </div>
           {this.props.book.authors ? (
-            this.props.book.authors.map((author, index) => (
-              <div key={index} className='book-authors'>
-                {author}
-              </div>
-            ))
+            <div className='book-authors'>
+              {this.props.book.authors.join(',')}
+            </div>
           ) : (
             <div className='book-authors'>Missing author</div>
           )}
@@ -87,3 +67,9 @@ export default class Book extends Component {
     );
   }
 }
+
+Book.protoType = {
+  addBook: PropTypes.func.isRequired,
+  book: PropTypes.object.isRequired,
+  shelf: PropTypes.string.isRequired,
+};
