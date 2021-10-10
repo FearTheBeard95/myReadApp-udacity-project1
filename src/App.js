@@ -12,19 +12,36 @@ class BooksApp extends React.Component {
     searchedBooks: [],
   };
 
+  shelves = [
+    {
+      id: 'currentlyReading',
+      title: 'Currently Reading',
+    },
+    {
+      id: 'wantToRead',
+      title: 'Want to Read',
+    },
+    {
+      id: 'read',
+      title: 'Read',
+    },
+  ];
+
   //Function to handle the adding of a book the users library on a given shelf
-  handleAddBook = (book) => {
+  handleAddBook = (book, shelf) => {
+    let mybooks = this.state.mybooks.filter((b) => b.id !== book.id);
+
+    if (shelf !== 'none') {
+      book.shelf = shelf;
+      mybooks = [...mybooks, book];
+    }
+
     this.setState(
-      (prevState) => {
-        const filteredBooks = prevState.mybooks.filter((b) => b.id !== book.id);
-        return {
-          mybooks: [...filteredBooks, book],
-        };
+      {
+        mybooks,
       },
       () => {
-        BooksAPI.update(book, book.shelf)
-          .then((b) => {})
-          .catch((e) => {});
+        BooksAPI.update(book, shelf).catch((e) => {});
       }
     );
   };
@@ -36,13 +53,7 @@ class BooksApp extends React.Component {
         .then((books) => {
           if (books && !books.error) {
             this.setState({
-              searchedBooks: books.map((book) => {
-                const currentLibrary = this.state.mybooks.find(
-                  (b) => b.id === book.id
-                );
-                if (currentLibrary) book.shelf = currentLibrary.shelf;
-                return book;
-              }),
+              searchedBooks: books,
             });
           } else {
             this.setState({
@@ -86,7 +97,11 @@ class BooksApp extends React.Component {
           exact
           path='/'
           render={() => (
-            <BookShelf books={mybooks} addBook={this.handleAddBook} />
+            <BookShelf
+              books={mybooks}
+              addBook={this.handleAddBook}
+              shelves={this.shelves}
+            />
           )}
         />
         <Route
@@ -94,7 +109,7 @@ class BooksApp extends React.Component {
           render={() => (
             <BookSearch
               addBook={this.handleAddBook}
-              currentLibary={mybooks}
+              currentBooks={mybooks}
               search={this.handleSearch}
               searchedBooks={this.state.searchedBooks}
               resetSearch={this.handleResetSearch}

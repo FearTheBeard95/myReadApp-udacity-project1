@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BookList from './BookList';
+import PropTypes from 'prop-types';
 
 //BookShelf component to hold the three different book shelves
 const BookShelf = (props) => (
@@ -10,23 +11,13 @@ const BookShelf = (props) => (
     </div>
     <div className='list-books-content'>
       <div>
-        <BookList
-          title='Currently reading'
-          books={props.books.filter(
-            (book) => book.shelf === 'currentlyReading'
-          )}
-          addBook={props.addBook}
-        />
-        <BookList
-          title='Want to read'
-          books={props.books.filter((book) => book.shelf === 'wantToRead')}
-          addBook={props.addBook}
-        />
-        <BookList
-          title='Read'
-          books={props.books.filter((book) => book.shelf === 'read')}
-          addBook={props.addBook}
-        />
+        {props.shelves.map((shelf) => (
+          <BookList
+            title={shelf.title}
+            books={props.books.filter((book) => book.shelf === shelf.id)}
+            addBook={props.addBook}
+          />
+        ))}
       </div>
     </div>
     <div className='open-search'>
@@ -36,4 +27,11 @@ const BookShelf = (props) => (
     </div>
   </div>
 );
+
+BookShelf.protoType = {
+  addBook: PropTypes.func.isRequired,
+  books: PropTypes.array.isRequired,
+  shelves: PropTypes.array.isRequired,
+};
+
 export default BookShelf;
