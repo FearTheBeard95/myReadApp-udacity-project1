@@ -11,11 +11,12 @@ const BookShelf = (props) => (
     </div>
     <div className='list-books-content'>
       <div>
-        {props.shelves.map((shelf) => (
+        {props.shelves.map((shelf, index) => (
           <BookList
             title={shelf.title}
             books={props.books.filter((book) => book.shelf === shelf.id)}
             addBook={props.addBook}
+            key={index}
           />
         ))}
       </div>
