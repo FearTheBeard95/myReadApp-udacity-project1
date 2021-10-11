@@ -31,19 +31,16 @@ class BooksApp extends React.Component {
   handleAddBook = (book, shelf) => {
     let mybooks = this.state.mybooks.filter((b) => b.id !== book.id);
 
+    BooksAPI.update(book, shelf).catch((e) => {});
+
     if (shelf !== 'none') {
       book.shelf = shelf;
       mybooks = [...mybooks, book];
     }
 
-    this.setState(
-      {
-        mybooks,
-      },
-      () => {
-        BooksAPI.update(book, shelf).catch((e) => {});
-      }
-    );
+    this.setState({
+      mybooks,
+    });
   };
 
   //Function to handle the searching of books that can be added to the users library
